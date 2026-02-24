@@ -44,25 +44,19 @@ button {
 <div id="map-container"></div>
 <div class="tooltip" id="tooltip"></div>
 
-<script>
-
-const NOTION_TOKEN = "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";
-const DATABASE_ID = "3047e1c28aff80ffa960ca981013e394";
-
 async function loadData() {
 
     const response = await fetch("https://carte-soleil-englouti.vercel.app/", {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${NOTION_TOKEN}`,
+            "Authorization": `Bearer ${process.env.NOTION_TOKEN}`,
             "Notion-Version": "2022-06-28",
             "Content-Type": "application/json"
         },
         body: JSON.stringify({})
     });
-
     const data = await response.json();
-    const pages = data.results;
+    res.status(200).json(data);
 
     fetch("map.svg")
         .then(res => res.text())
