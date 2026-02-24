@@ -1,79 +1,90 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Carte - Soleil Englouti</title>
-<style>
-body {
-    background: #111;
-    color: white;
-    font-family: Arial;
-    text-align: center;
-}
-
-#map-container {
-    width: 95%;
-    margin: auto;
-}
-
-svg {
-    width: 100%;
-    height: auto;
-}
-
-.tooltip {
-    position: absolute;
-    background: black;
-    padding: 6px;
-    border-radius: 4px;
-    font-size: 14px;
-    pointer-events: none;
-    display: none;
-}
-button {
-    margin: 15px;
-    padding: 8px 15px;
-    cursor: pointer;
-}
-</style>
+    <meta charset="UTF-8">
+    <title>Carte - Soleil Englouti</title>
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+        }
+        #map-container {
+            width: 95%;
+            margin: auto;
+        }
+        svg {
+            width: 100%;
+            height: auto;
+        }
+        .tooltip {
+            position: absolute;
+            background: black;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            pointer-events: none;
+            display: none;
+            border: 1px solid #444;
+            z-index: 1000;
+        }
+        button {
+            margin: 15px;
+            padding: 8px 15px;
+            cursor: pointer;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #666;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Carte Stratégique — La Légion du Soleil Englouti</h2>
-<button onclick="loadData()">Actualiser</button>
-<div id="map-container"></div>
-<div class="tooltip" id="tooltip"></div>
+    <h2>Carte Stratégique — La Légion du Soleil Englouti</h2>
+    <button onclick="loadData()">Actualiser</button>
+    <div id="map-container"></div>
+    <div class="tooltip" id="tooltip"></div>
 
-async function loadData() {
+    <script>
+    async function loadData() {
+        try {
+            // 1. Appel de ton API Vercel
+            const response = await fetch("/api/notion");
+            if (!response.ok) throw new Error("Erreur API");
+            
+            const data = await response.json();
+            const pages = data.results;
 
-    const response = await fetch("/api/notion"); 
-    const data = await response.json();
-    const pages = data.results;
+            // 2. Chargement du SVG
+            const resSvg = await fetch("map.svg");
+            const svgText = await resSvg.text();
+            document.getElementById("map-container").innerHTML = svgText;
 
-    const resSvg = await fetch("map.svg");
-    const svgText = await resSvg.text();
-
-    document.getElementById("map-container").innerHTML = svgText;
-
+            // 3. Application des données Notion
             pages.forEach(page => {
-
-                const hexId = page.properties["ID Hex"].rich_text[0]?.plain_text;
-                const statut = page.properties["Statut"]?.select?.name || "Neutre";
-                const nom = page.properties["Nom"].title[0]?.plain_text || "";
-                const faction = page.properties["Faction"]?.select?.name || "";
+                const props = page.properties;
+                const hexId = props["ID Hex"]?.rich_text[0]?.plain_text;
+                const statut = props["Statut"]?.select?.name || "Neutre";
+                const nom = props["Nom"]?.title[0]?.plain_text || "Zone inconnue";
+                const faction = props["Faction"]?.select?.name || "Inconnue";
 
                 const hex = document.getElementById(hexId);
 
                 if (hex) {
-
+                    // Couleurs
                     let color = "#666";
-
                     if (statut === "Conquis") color = "#8b0000";
-                    if (statut === "Ennemi") color = "#000";
-                    if (statut === "Neutre") color = "#666";
+                    if (statut === "Ennemi") color = "#000000";
 
                     hex.style.fill = color;
+                    hex.style.cursor = "pointer";
 
+                    // Événements
                     hex.addEventListener("mouseover", (e) => {
                         const tooltip = document.getElementById("tooltip");
                         tooltip.innerHTML = `<strong>${nom}</strong><br>Faction: ${faction}<br>Statut: ${statut}`;
@@ -87,11 +98,13 @@ async function loadData() {
                     });
                 }
             });
-        });
-}
+        } catch (err) {
+            console.error("Erreur de chargement :", err);
+        }
+    }
 
-loadData();
-
-</script>
+    // Chargement initial
+    loadData();
+    </script>
 </body>
 </html>
