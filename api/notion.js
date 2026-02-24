@@ -1,7 +1,5 @@
 export default async function handler(req, res) {
-  const response = await fetch(
-    `https://api.notion.com/v1/databases/${process.env.DATABASE_ID}/query`,
-    {
+  const response = await fetch("https://TON-PROJET.vercel.app/api/notion")
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.NOTION_TOKEN}`,
