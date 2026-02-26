@@ -126,7 +126,11 @@
                     hex.style.stroke = "white"; // Ajoute un petit contour pour mieux voir les hexagones
                     hex.style.strokeWidth = "0.5";
 
+                    hex.style.transition = "fill-opacity 0.2s, fill 0.2s";
+
                     hex.addEventListener("mouseover", (e) => {
+                        hex.style.fillOpacity = "0.9"
+                        
                         const tooltip = document.getElementById("tooltip");
                         tooltip.innerHTML = `<strong>${nom}</strong><br>Faction: ${faction}<br>Statut: ${statut}`;
                         tooltip.style.display = "block";
@@ -135,6 +139,9 @@
                     });
 
                     hex.addEventListener("mouseout", () => {
+
+                        hex.style.fillOpacity = "0.7";
+                        
                         document.getElementById("tooltip").style.display = "none";
                     });
                 }
