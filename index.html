@@ -118,8 +118,8 @@
                 if (hex) {
                     let color = "rgba(102, 102, 102, 0.2)"; // Neutre (Gris transparent)
                     
-                    if (statut === "Conquis") color = "rgba(0, 128, 255, 0.7)"; // Bleu transparent
-                    if (statut === "Ennemi") color = "rgba(255, 69, 0, 0.8)";   // Orange Rouge transparent
+                    if (statut === "Conquis") color = "rgba(0, 128, 255, 0.6)"; // Bleu transparent
+                    if (statut === "Ennemi") color = "rgba(255, 69, 0, 0.6)";   // Orange Rouge transparent
 
                     hex.style.fill = color;
                     hex.style.cursor = "pointer";
@@ -140,7 +140,7 @@
 
                     hex.addEventListener("mouseout", () => {
 
-                        hex.style.fillOpacity = "0.7";
+                        hex.style.fillOpacity = "0.6";
                         
                         document.getElementById("tooltip").style.display = "none";
                     });
