@@ -67,6 +67,8 @@
 
             const paths = document.querySelectorAll("#map-container path");
 
+            console.log("Nombre de paths :", paths.length);
+
             paths.forEach((path, index) => {
                 path.setAttribute("id", "HEX_" + index);
             });
