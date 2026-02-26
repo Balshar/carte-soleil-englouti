@@ -111,7 +111,7 @@
                 const hexId = props["ID Hex"]?.rich_text[0]?.plain_text;
                 const statut = props["Statut"]?.select?.name || "Neutre";
                 const nom = props["Nom"]?.title[0]?.plain_text || "Zone inconnue";
-                const faction = props["Faction"]?.select?.name || "Inconnue";
+                const faction = props["Nom Faction"]?.rollup?.array[0]?.title[0]?.plain_text || "Inconnue";
 
                 const hex = document.getElementById(hexId);
 
