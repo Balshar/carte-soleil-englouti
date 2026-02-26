@@ -65,6 +65,12 @@
             const svgText = await resSvg.text();
             document.getElementById("map-container").innerHTML = svgText;
 
+            const paths = document.querySelectorAll("#map-container path");
+
+            paths.forEach((path, index) => {
+                path.setAttribute("id", "HEX_" + index);
+            });
+
             // 3. Application des données Notion
             pages.forEach(page => {
                 const props = page.properties;
