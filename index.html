@@ -116,10 +116,10 @@
                 const hex = document.getElementById(hexId);
 
                 if (hex) {
-                    let color = "rgba(102, 102, 102, 0.1)"; // Neutre (Gris transparent)
+                    let color = "rgba(102, 102, 102, 0.2)"; // Neutre (Gris transparent)
                     
-                    if (statut === "Conquis") color = "rgba(139, 0, 0, 0.7)"; // Rouge transparent
-                    if (statut === "Ennemi") color = "rgba(0, 0, 0, 0.7)";   // Noir transparent
+                    if (statut === "Conquis") color = "rgba(0, 128, 255, 0.7)"; // Bleu transparent
+                    if (statut === "Ennemi") color = "rgba(255, 69, 0, 0.8)";   // Orange Rouge transparent
 
                     hex.style.fill = color;
                     hex.style.cursor = "pointer";
