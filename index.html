@@ -97,6 +97,14 @@
             // On injecte le SVG dans la couche du dessus
             document.getElementById("map-svg-layer").innerHTML = svgText;
 
+            const paths = document.querySelectorAll("#map-container path");
+
+            console.log("Nombre de paths :", paths.length);
+
+            paths.forEach((path, index) => {
+                path.setAttribute("id", "HEX_" + index);
+            });
+
             // 3. Application des données Notion
             pages.forEach(page => {
                 const props = page.properties;
