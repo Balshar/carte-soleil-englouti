@@ -116,10 +116,10 @@
                 const hex = document.getElementById(hexId);
 
                 if (hex) {
-                    let color = "rgba(102, 102, 102, 0.2)"; // Neutre (Gris transparent)
+                    let color = "rgba(102, 102, 102, 0.25)"; // Neutre (Gris transparent)
                     
                     if (statut === "Conquis") color = "rgba(0, 128, 255, 0.6)"; // Bleu transparent
-                    if (statut === "Ennemi") color = "rgba(255, 69, 0, 0.6)";   // Orange Rouge transparent
+                    if (statut === "Ennemi") color = "rgba(255, 69, 0, 0.6)";   // Orange transparent
 
                     hex.style.fill = color;
                     hex.style.cursor = "pointer";
@@ -129,7 +129,7 @@
                     hex.style.transition = "fill-opacity 0.2s, fill 0.2s";
 
                     hex.addEventListener("mouseover", (e) => {
-                        hex.style.fillOpacity = "0.9"
+                        hex.style.fillOpacity = "0.95"
                         
                         const tooltip = document.getElementById("tooltip");
                         tooltip.innerHTML = `<strong>${nom}</strong><br>Faction: ${faction}<br>Statut: ${statut}`;
