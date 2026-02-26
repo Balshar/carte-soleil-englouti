@@ -10,14 +10,37 @@
             font-family: Arial;
             text-align: center;
         }
+
+        /* Le conteneur parent */
         #map-container {
             width: 95%;
             margin: auto;
+            position: relative; /* Indispensable pour superposer */
+            line-height: 0;
         }
-        svg {
+
+        /* L'image qui reste en dessous */
+        #map-background {
             width: 100%;
             height: auto;
+            display: block;
         }
+
+        /* La couche SVG qui se met par-dessus l'image */
+        #map-svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
         .tooltip {
             position: absolute;
             background: black;
@@ -29,6 +52,7 @@
             border: 1px solid #444;
             z-index: 1000;
         }
+
         button {
             margin: 15px;
             padding: 8px 15px;
@@ -47,7 +71,13 @@
 
     <h2>Carte Stratégique — La Légion du Soleil Englouti</h2>
     <button onclick="loadData()">Actualiser</button>
-    <div id="map-container"></div>
+
+    <div id="map-container">
+        <img src="fond-carte.png" id="map-background">
+        
+        <div id="map-svg-layer"></div>
+    </div>
+
     <div class="tooltip" id="tooltip"></div>
 
     <script>
@@ -63,15 +93,9 @@
             // 2. Chargement du SVG
             const resSvg = await fetch("map.svg");
             const svgText = await resSvg.text();
-            document.getElementById("map-container").innerHTML = svgText;
-
-            const paths = document.querySelectorAll("#map-container path");
-
-            console.log("Nombre de paths :", paths.length);
-
-            paths.forEach((path, index) => {
-                path.setAttribute("id", "HEX_" + index);
-            });
+            
+            // On injecte le SVG dans la couche du dessus
+            document.getElementById("map-svg-layer").innerHTML = svgText;
 
             // 3. Application des données Notion
             pages.forEach(page => {
@@ -84,15 +108,16 @@
                 const hex = document.getElementById(hexId);
 
                 if (hex) {
-                    // Couleurs
-                    let color = "#666";
-                    if (statut === "Conquis") color = "#8b0000";
-                    if (statut === "Ennemi") color = "#000000";
+                    let color = "rgba(102, 102, 102, 0.5)"; // Neutre (Gris transparent)
+                    
+                    if (statut === "Conquis") color = "rgba(139, 0, 0, 0.7)"; // Rouge transparent
+                    if (statut === "Ennemi") color = "rgba(0, 0, 0, 0.7)";   // Noir transparent
 
                     hex.style.fill = color;
                     hex.style.cursor = "pointer";
+                    hex.style.stroke = "white"; // Ajoute un petit contour pour mieux voir les hexagones
+                    hex.style.strokeWidth = "0.5";
 
-                    // Événements
                     hex.addEventListener("mouseover", (e) => {
                         const tooltip = document.getElementById("tooltip");
                         tooltip.innerHTML = `<strong>${nom}</strong><br>Faction: ${faction}<br>Statut: ${statut}`;
@@ -111,7 +136,6 @@
         }
     }
 
-    // Chargement initial
     loadData();
     </script>
 </body>
